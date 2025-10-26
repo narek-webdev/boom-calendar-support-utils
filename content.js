@@ -3,6 +3,7 @@
 // the current page to see if a Boom Calendar iframe is present.
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+
   // Only respond to our specific check message
   if (request && request.type === 'checkCalendar') {
     try {
@@ -21,17 +22,27 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       // In the unlikely event of an error, default to not present
       sendResponse({ present: false });
     }
+        
   // Provide the current state of localize settings (e.g. Autotranslation)
-  if (request && request.type === 'getLocalizeSettings') {
+  if (request && request.type === "checkCalendar") {
     try {
       // Wrap Wix.Styles.getStyleParams in a Promise to use then/catch
-      new Promise(Wix.Styles.getStyleParams)
+      new Promise(window.Wix.Styles.getStyleParams)
         .then((res) => {
-          // Determine the autotranslation flag. If the property is missing,
+          // Determine the autotranslation flag. The API may return either
+          // a booleans property or direct properties. If the property is missing,
           // default to true (on).
+          console.log(res);
+          return;
           let on = true;
-          if (res && res.booleans && typeof res.booleans.autotranslation !== 'undefined') {
-            on = res.booleans.autotranslation !== 'off';
+          if (res) {            
+            // Case 1: top-level boolean property
+            if (typeof res.autotranslation !== 'undefined') {
+              on = !!res.autotranslation;
+            } else if (res.booleans && typeof res.booleans.autotranslation !== 'undefined') {
+              // Case 2: booleans.autotranslation exists (value is boolean)
+              on = !!res.booleans.autotranslation;
+            }
           }
           sendResponse({ autotranslation: on });
         })
@@ -41,6 +52,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
       return true; // Indicate asynchronous response
     } catch (err) {
+      console.log(err);
+      
       sendResponse({ autotranslation: true });
     }
   }

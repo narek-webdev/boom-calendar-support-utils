@@ -92,6 +92,8 @@ function showLocalize() {
   const localizeContainer = document.getElementById('localize-container');
   if (homeContainer) homeContainer.style.display = 'none';
   if (localizeContainer) localizeContainer.style.display = 'block';
+  // Initialize the autotranslation state to default while waiting for response
+  updateAutotranslation(true);
   // Query the active tab and request the Autotranslation setting
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (!tabs || tabs.length === 0) {
@@ -120,20 +122,14 @@ function showLocalize() {
  */
 function updateAutotranslation(on) {
   const stateElement = document.getElementById('autotranslation-state');
-  const boxElement = document.getElementById('autotranslation-box');
-  if (!stateElement || !boxElement) return;
+  if (!stateElement) return;
+  // Reset any previous state classes
+  stateElement.classList.remove('is-success', 'is-danger');
   if (on) {
     stateElement.textContent = 'On';
-    stateElement.classList.remove('is-danger');
     stateElement.classList.add('is-success');
-    // Apply a light success background to the box
-    boxElement.classList.remove('has-background-danger-light');
-    boxElement.classList.add('has-background-success-light');
   } else {
     stateElement.textContent = 'Off';
-    stateElement.classList.remove('is-success');
     stateElement.classList.add('is-danger');
-    boxElement.classList.remove('has-background-success-light');
-    boxElement.classList.add('has-background-danger-light');
   }
 }
