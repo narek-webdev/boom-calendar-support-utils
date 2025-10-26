@@ -21,35 +21,53 @@
 <body>
   <div class="popup-container">
     <h1 class="title is-5">Boom Calendar Checker</h1>
-    <div id="status-icon">…</div>
-    <p id="status" class="subtitle is-6">Checking…</p>
-    <!-- Panel container for the section list. Hidden by default and displayed when the calendar is present. -->
-    <nav id="sections-container" class="panel" style="display: none; margin-top: 1rem;">
-      <p class="panel-heading">
-        Sections
-      </p>
-      <a class="panel-block" id="section-localize">
-        🌍&nbsp; Localize
-      </a>
-      <a class="panel-block" id="section-settings">
-        ⚙️&nbsp; Settings
-      </a>
-      <a class="panel-block" id="section-layouts">
-        📐&nbsp; Layouts
-      </a>
-      <a class="panel-block" id="section-advanced">
-        🛠️&nbsp; Advanced
-      </a>
-      <a class="panel-block" id="section-design">
-        🎨&nbsp; Design
-      </a>
-      <a class="panel-block" id="section-texts">
-        📝&nbsp; Texts
-      </a>
-      <a class="panel-block" id="section-addons">
-        ➕&nbsp; Add-ons
-      </a>
-    </nav>
+    <!-- HOME VIEW -->
+    <div id="home-container">
+      <div id="status-icon">…</div>
+      <p id="status" class="subtitle is-6">Checking…</p>
+      <!-- Panel container for the section list. Hidden by default and displayed when the calendar is present. -->
+      <nav id="sections-container" class="panel" style="display: none; margin-top: 1rem;">
+        <p class="panel-heading">
+          Sections
+        </p>
+        <a class="panel-block" id="section-localize">
+          🌍&nbsp; Localize
+        </a>
+        <a class="panel-block" id="section-settings">
+          ⚙️&nbsp; Settings
+        </a>
+        <a class="panel-block" id="section-layouts">
+          📐&nbsp; Layouts
+        </a>
+        <a class="panel-block" id="section-advanced">
+          🛠️&nbsp; Advanced
+        </a>
+        <a class="panel-block" id="section-design">
+          🎨&nbsp; Design
+        </a>
+        <a class="panel-block" id="section-texts">
+          📝&nbsp; Texts
+        </a>
+        <a class="panel-block" id="section-addons">
+          ➕&nbsp; Add-ons
+        </a>
+      </nav>
+    </div>
+
+    <!-- LOCALIZE VIEW -->
+    <div id="localize-container" style="display: none;">
+      <button id="back-home" class="button is-small mb-2">← Back</button>
+      <div id="autotranslation-box" class="box">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <strong>Autotranslation</strong>
+          </div>
+          <div class="level-right">
+            <span id="autotranslation-state" class="tag">Loading…</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <script src="popup.js"></script>
 </body>

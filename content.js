@@ -21,6 +21,29 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       // In the unlikely event of an error, default to not present
       sendResponse({ present: false });
     }
+  // Provide the current state of localize settings (e.g. Autotranslation)
+  if (request && request.type === 'getLocalizeSettings') {
+    try {
+      // Wrap Wix.Styles.getStyleParams in a Promise to use then/catch
+      new Promise(Wix.Styles.getStyleParams)
+        .then((res) => {
+          // Determine the autotranslation flag. If the property is missing,
+          // default to true (on).
+          let on = true;
+          if (res && res.booleans && typeof res.booleans.autotranslation !== 'undefined') {
+            on = res.booleans.autotranslation !== 'off';
+          }
+          sendResponse({ autotranslation: on });
+        })
+        .catch(() => {
+          // On error, default to on
+          sendResponse({ autotranslation: true });
+        });
+      return true; // Indicate asynchronous response
+    } catch (err) {
+      sendResponse({ autotranslation: true });
+    }
+  }
   }
   // Returning true is a best practice when sendResponse is used asynchronously.
   return true;
